@@ -12,6 +12,21 @@ $gsent->execute();
 //Crear un arreglo en el que se guarda la data
 $resultado = $gsent->fetchAll();
 
+//ESCRITURA DE DATOS EN LA DB. 
+if ($_POST) {
+                //name='color' del iput html
+    /*echo $_POST['color'];
+    echo $_POST['descripcion'];*/
+
+    $color = $_POST['color'];
+    $descripcion = $_POST['descripcion'];
+
+    $sql_agregar = 'INSERT INTO colores (color, descripcion) 
+                                    VALUES(?,?);';
+    $sentencia_agregar = $pdo->prepare($sql_agregar);
+    $sentencia_agregar->execute(array($color, $descripcion));
+    header('location:index.php');
+}
 
 
 
@@ -36,15 +51,15 @@ $resultado = $gsent->fetchAll();
     <div class="container mt-5">
 
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
+
 
                 <?php foreach ($resultado as $dato) :  ?>
 
-                    <div 
-                    class="alert alert-<?php echo $dato['color']; ?> 
+                    <div class="alert alert-<?php echo $dato['color']; ?> 
                     text-uppercase" role="alert">
 
-                        <?php echo $dato['color']; ?> 
+                        <?php echo $dato['color']; ?>
                         -
                         <?php echo $dato['descripcion']; ?>
 
@@ -52,6 +67,16 @@ $resultado = $gsent->fetchAll();
                 <?php endforeach; ?>
 
             </div>
+
+            <div class="col-md-6">
+                <h2>Agregar elementos</h2>
+                <form method="POST">
+                    <input type="text" class="form-control" , name="color">
+                    <input type="text" class="form-control mt-3" , name="descripcion">
+                    <button class="btn btn-primary mt-3">Agregar</button>
+                </form>
+            </div>
+
         </div>
 
 
